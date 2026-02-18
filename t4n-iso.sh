@@ -20,9 +20,8 @@ usage() {
 
 	OPTIONS
 	 -a <arch>     Set architecture (or platform) in the image
-	 -b <variant>  One of base, server, xfce,xfce-wayland, kde, bspwm, river
-                 (default: base). May be specified multiple times to build 
-                 multiple variants.
+	 -b <variant>  One of base, server, xfce,xfce-wayland(default: base).
+                   May be specified multiple times to build multiple variants.
 	 -d <date>     Override the datestamp on the generated image (YYYYMMDD format)
 	 -t <arch-date-variant>
 	               Equivalent to setting -a, -b, and -d
@@ -173,6 +172,8 @@ build_variant() {
         # ;;
         xfce*)
             PKGS="$PKGS $XORG_PKGS lightdm lightdm-gtk-greeter xfce4 gnome-themes-standard gnome-keyring network-manager-applet gvfs-afc gvfs-mtp gvfs-smb udisks2 firefox xfce4-pulseaudio-plugin"
+            CLI=yes
+
             SERVICES="$SERVICES dbus lightdm NetworkManager polkitd"
             LIGHTDM_SESSION=xfce
 
@@ -181,19 +182,6 @@ build_variant() {
                 LIGHTDM_SESSION="xfce-wayland"
             fi
         ;;
-        kde)
-            PKGS="$PKGS $XORG_PKGS kde5 konsole firefox dolphin NetworkManager"
-            SERVICES="$SERVICES dbus NetworkManager sddm"
-        ;;
-        # bspwm)
-        #     PKGS="$PKGS $XORG_PKGS lxde lightdm lightdm-gtk-greeter gvfs-afc gvfs-mtp gvfs-smb udisks2 firefox"
-        #     SERVICES="$SERVICES acpid dbus dhcpcd wpa_supplicant lightdm polkitd"
-        #     LIGHTDM_SESSION=LXDE
-        # ;;
-        # river)
-        #     PKGS="$PKGS $XORG_PKGS lxqt sddm gvfs-afc gvfs-mtp gvfs-smb udisks2 firefox"
-        #     SERVICES="$SERVICES dbus dhcpcd wpa_supplicant sddm polkitd"
-        # ;;
         *)
             >&2 echo "Unknown variant $variant"
             exit 1
