@@ -1,3 +1,7 @@
 Perubahan :
 
 1. Modif t4n-live.sh & t4n-iso.sh
+
+
+Info :
+1. .github/work = Sengaja dibuat tanpa `flows` agar gk jalan
