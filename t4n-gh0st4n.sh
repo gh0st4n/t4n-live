@@ -15,13 +15,13 @@ usage() {
 	cat <<-EOH
 	Usage: $PROGNAME [options ...] [-- t4n-live options ...]
 
-	Wrapper script around t4n-live.sh for several standard flavors of live images.
+	Wrapper script around t4n-gh0st4n.sh for several standard flavors of live images.
 	Adds void-installer and other helpful utilities to the generated images.
 
 	OPTIONS
 	 -a <arch>     Set architecture (or platform) in the image
-	 -b <variant>  One of base, server, bspwm, xfce,xfce-wayland(default: base).
-                   May be specified multiple times to build multiple variants.
+	 -b <variant>  One of bspwm. May be specified multiple times
+	 			   to build multiple variants.
 	 -d <date>     Override the datestamp on the generated image (YYYYMMDD format)
 	 -t <arch-date-variant>
 	               Equivalent to setting -a, -b, and -d
@@ -30,7 +30,7 @@ usage() {
 	 -V            Show version and exit
 
 	Other options can be passed directly to t4n-live.sh by specifying them after the --.
-	See t4n-live.sh -h for more details.
+	See t4n-gh0st4n.sh -h for more details.
 	EOH
 }
 
@@ -161,33 +161,12 @@ build_variant() {
     LIGHTDM_SESSION=''
 
     case $variant in
-        base)
-            PKGS="$PKGS $FILE_PKGS tree bat eza nano NetworkManager"
-            CLI=yes
-
-            SERVICES="$SERVICES dbus NetworkManager acpid polkitd"
-        ;;
-        # server)
-        #     SERVICES="$SERVICES dhcpcd wpa_supplicant acpid"
-        # ;;
         bspwm)
             PKGS="$PKGS $FILE_PKGS tree bat eza nano NetworkManager"
             CLI=yes
             BSPWM=yes
 
             SERVICES="$SERVICES dbus NetworkManager acpid polkitd"
-        ;;
-        xfce*)
-            PKGS="$PKGS $FILE_PKGS $XORG_PKGS lightdm lightdm-gtk-greeter xfce4 gnome-themes-standard gnome-keyring network-manager-applet gvfs-afc gvfs-mtp gvfs-smb udisks2 firefox xfce4-pulseaudio-plugin tree bat eza nano"
-            CLI=yes
-
-            SERVICES="$SERVICES dbus lightdm NetworkManager acpid polkitd"
-            LIGHTDM_SESSION=xfce
-
-            if [ "$variant" == "xfce-wayland" ]; then
-                PKGS="$PKGS $WAYLAND_PKGS labwc"
-                LIGHTDM_SESSION="xfce-wayland"
-            fi
         ;;
         *)
             >&2 echo "Unknown variant $variant"
