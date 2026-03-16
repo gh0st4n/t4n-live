@@ -91,14 +91,25 @@ include_cli() {
   mkdir -p "$INCLUDEDIR"/etc/default
   mkdir -p "$INCLUDEDIR"/etc/runit
   mkdir -p "$INCLUDEDIR"/etc/skel
+  mkdir -p "$INCLUDEDIR"/etc/polkit-1
+  mkdir -p "$INCLUDEDIR"/etc/polkit-1/rules.d
   mkdir -p "$INCLUDEDIR"/root
 
   cp ./common/script/resolv.conf "$INCLUDEDIR"/etc/
   cp ./common/script/os-release "$INCLUDEDIR"/etc/
+  cp ./common/script/grub "$INCLUDEDIR"/etc/default/
   cp ./common/script/.bashrc "$INCLUDEDIR"/etc/skel/
   cp ./common/script/root/.bashrc "$INCLUDEDIR"/root/
+  cp ./common/script/polkit/20-networkmanager.rules "$INCLUDEDIR"/etc/polkit-1/rules.d
 
   cp -r ./common/script/runit/* "$INCLUDEDIR"/etc/runit/
+  cat >> "$INCLUDEDIR"/etc/group <<EOF
+audio:x:29:anon
+video:x:44:anon
+input:x:105:anon
+disk:x:6:anon
+wheel:x:10:anon
+EOF
 }
 
 # include_gui() {}
@@ -154,19 +165,19 @@ build_variant() {
 
     case $variant in
         base)
-            PKGS="$PKGS $FILE_PKGS tree bat eza exa nano NetworkManager"
+            PKGS="$PKGS $FILE_PKGS tree bat eza nano NetworkManager"
             CLI=yes
 
-            SERVICES="$SERVICES dbus NetworkManager acpid"
+            SERVICES="$SERVICES dbus NetworkManager acpid polkitd"
         ;;
         # server)
         #     SERVICES="$SERVICES dhcpcd wpa_supplicant acpid"
         # ;;
         xfce*)
-            PKGS="$PKGS $XORG_PKGS lightdm lightdm-gtk-greeter xfce4 gnome-themes-standard gnome-keyring network-manager-applet gvfs-afc gvfs-mtp gvfs-smb udisks2 firefox xfce4-pulseaudio-plugin"
+            PKGS="$PKGS $FILE_PKGS $XORG_PKGS lightdm lightdm-gtk-greeter xfce4 gnome-themes-standard gnome-keyring network-manager-applet gvfs-afc gvfs-mtp gvfs-smb udisks2 firefox xfce4-pulseaudio-plugin tree bat eza nano"
             CLI=yes
 
-            SERVICES="$SERVICES dbus lightdm NetworkManager polkitd"
+            SERVICES="$SERVICES dbus lightdm NetworkManager acpid polkitd"
             LIGHTDM_SESSION=xfce
 
             if [ "$variant" == "xfce-wayland" ]; then
@@ -217,7 +228,7 @@ EOF
 }
 
 if [ ! -x t4n-live.sh ]; then
-    echo mklive.sh not found >&2
+    echo t4n-live.sh not found >&2
     exit 1
 fi
 

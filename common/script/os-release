@@ -1,13 +1,17 @@
-NAME="T4n-OS"
-PRETTY_NAME="T4n-OS"
-ID="t4n-os"
-ID_LIKE="void"
-ANSI_COLOR="0;38;2;71;128;97"
-HOME_URL="https://t4n-company.github.io/t4n-os/"
-DOCUMENTATION_URL="https://t4n-company.github.io/t4n-os/doc/index.html"
+NAME="T4n OS"
+PRETTY_NAME="T4n OS (Miftah)"
+ID=t4n
+ID_LIKE=void
+
+BUILD_ID=rolling
+VERSION="Rolling"
+VERSION_CODENAME=miftah
+
+ANSI_COLOR="38;2;34;139;34"
+
+HOME_URL="https://t4n-labs.github.io/t4n-os/"
+DOCUMENTATION_URL="https://t4n-labs.github.io/t4n-os_docs/"
+SUPPORT_URL="https://github.com/T4n-Labs"
+BUG_REPORT_URL="https://github.com/T4n-Labs/t4n-live/issues"
+
 LOGO="t4n-os"
-
-DISTRIB_ID="T4n OS"
-DISTRIB_DESCRIPTION="T4n OS (Void Linux Based)"
-
-
