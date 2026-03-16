@@ -114,8 +114,7 @@ EOF
 
 # include_gui() {}
 
-# include_x11() {}
-# include_way() {}
+# include_server() {}
 
 build_variant() {
     variant="$1"
@@ -171,6 +170,9 @@ build_variant() {
             SERVICES="$SERVICES dbus NetworkManager acpid polkitd"
         ;;
         # server)
+        #     PKGS="$PKGS $FILE_PKGS"
+        #     SERVER=yes
+        #
         #     SERVICES="$SERVICES dhcpcd wpa_supplicant acpid"
         # ;;
         xfce*)
@@ -205,6 +207,10 @@ EOF
       include_cli
     fi
 
+    # if [ "$SERVER" = yes ]; then
+    #   include_server
+    # fi
+
     if [ "$WANT_INSTALLER" = yes ]; then
         include_installer
     else
@@ -215,6 +221,7 @@ EOF
 
     case "$variant" in
       base|server)
+        echo "Without Pipewire"
       ;;
       *)
         setup_pipewire
