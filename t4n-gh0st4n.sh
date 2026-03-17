@@ -162,7 +162,7 @@ build_variant() {
 
     case $variant in
         bspwm)
-            PKGS="$PKGS $FILE_PKGS tree bat eza nano NetworkManager"
+            PKGS="$PKGS $FILE_PKGS tree bat eza nano NetworkManager polkit"
             CLI=yes
             BSPWM=yes
 
