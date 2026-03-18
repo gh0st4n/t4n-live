@@ -162,11 +162,11 @@ build_variant() {
 
     case $variant in
         bspwm)
-            PKGS="$PKGS $FILE_PKGS tree bat eza nano NetworkManager polkit"
+            PKGS="$PKGS $FILE_PKGS tree bat eza nano NetworkManager polkit elogind"
             CLI=yes
             BSPWM=yes
 
-            SERVICES="$SERVICES dbus NetworkManager acpid polkitd"
+            SERVICES="$SERVICES dbus NetworkManager polkitd elogind"
         ;;
         *)
             >&2 echo "Unknown variant $variant"
