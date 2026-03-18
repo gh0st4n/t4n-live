@@ -155,7 +155,7 @@ build_variant() {
     A11Y_PKGS="espeakup void-live-audio brltty"
     PKGS="dialog cryptsetup lvm2 mdadm void-docs-browse xtools-minimal xmirror chrony tmux $A11Y_PKGS $GRUB_PKGS"
     FILE_PKGS="tar xz gzip zstd zip unzip 7zip p7zip"
-    FONTS="font-misc-misc terminus-font dejavu-fonts-ttf"
+    FONTS="fontconfig font-misc-misc terminus-font dejavu-fonts-ttf"
     WAYLAND_PKGS="$GFX_WL_PKGS $FONTS orca"
     XORG_PKGS="$GFX_PKGS $FONTS xorg-fonts xorg-server xorg-apps xorg-minimal xorg-input-drivers setxkbmap xauth orca"
     SERVICES="sshd chronyd"
