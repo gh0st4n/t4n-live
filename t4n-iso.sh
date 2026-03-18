@@ -155,7 +155,7 @@ build_variant() {
     A11Y_PKGS="espeakup void-live-audio brltty"
     PKGS="dialog cryptsetup lvm2 mdadm void-docs-browse xtools-minimal xmirror chrony tmux $A11Y_PKGS $GRUB_PKGS"
     FILE_PKGS="tar xz gzip zstd zip unzip 7zip p7zip"
-    FONTS="font-misc-misc terminus-font dejavu-fonts-ttf"
+    FONTS="fontconfig font-misc-misc terminus-font dejavu-fonts-ttf"
     WAYLAND_PKGS="$GFX_WL_PKGS $FONTS orca"
     XORG_PKGS="$GFX_PKGS $FONTS xorg-fonts xorg-server xorg-apps xorg-minimal xorg-input-drivers setxkbmap xauth orca"
     SERVICES="sshd chronyd"
@@ -164,10 +164,10 @@ build_variant() {
 
     case $variant in
         base)
-            PKGS="$PKGS $FILE_PKGS tree bat eza nano NetworkManager polkit"
+            PKGS="$PKGS $FILE_PKGS tree bat eza nano NetworkManager polkit elogind"
             CLI=yes
 
-            SERVICES="$SERVICES dbus NetworkManager acpid polkitd"
+            SERVICES="$SERVICES dbus NetworkManager polkitd elogind"
         ;;
         # server)
         #     PKGS="$PKGS $FILE_PKGS"
@@ -176,10 +176,10 @@ build_variant() {
         #     SERVICES="$SERVICES dhcpcd wpa_supplicant acpid"
         # ;;
         xfce*)
-            PKGS="$PKGS $FILE_PKGS $XORG_PKGS lightdm lightdm-gtk-greeter xfce4 gnome-themes-standard gnome-keyring network-manager-applet gvfs-afc gvfs-mtp gvfs-smb udisks2 firefox xfce4-pulseaudio-plugin tree bat eza nano"
+            PKGS="$PKGS $FILE_PKGS $XORG_PKGS lightdm lightdm-gtk-greeter xfce4 elogind gnome-themes-standard gnome-keyring network-manager-applet gvfs-afc gvfs-mtp gvfs-smb udisks2 firefox xfce4-pulseaudio-plugin tree bat eza nano"
             CLI=yes
 
-            SERVICES="$SERVICES dbus lightdm NetworkManager acpid polkitd"
+            SERVICES="$SERVICES dbus lightdm NetworkManager polkitd elogind"
             LIGHTDM_SESSION=xfce
 
             if [ "$variant" == "xfce-wayland" ]; then
