@@ -6,7 +6,7 @@ set -eu
 
 PROGNAME=$(basename "$0")
 ARCH=$(uname -m)
-IMAGES="base"
+IMAGES="bspwm"
 TRIPLET=
 REPO=
 DATE=$(date -u +%Y%m%d)
@@ -20,7 +20,7 @@ usage() {
 
 	OPTIONS
 	 -a <arch>     Set architecture (or platform) in the image
-	 -b <variant>  One of bspwm. May be specified multiple times
+	 -b <variant>  One of bspwm(default: bspwm). May be specified multiple times
 	 			   to build multiple variants.
 	 -d <date>     Override the datestamp on the generated image (YYYYMMDD format)
 	 -t <arch-date-variant>
@@ -66,7 +66,7 @@ include_installer() {
         echo installer.sh not found >&2
         exit 1
     fi
-}
+}rtkit
 
 setup_pipewire() {
     PKGS="$PKGS pipewire alsa-pipewire"
@@ -151,22 +151,32 @@ build_variant() {
     esac
 
     A11Y_PKGS="espeakup void-live-audio brltty"
-    PKGS="dialog cryptsetup lvm2 mdadm void-docs-browse xtools-minimal xmirror chrony tmux $A11Y_PKGS $GRUB_PKGS"
+    PKGS="dialog cryptsetup lvm2 mdadm void-docs-browse chrony $A11Y_PKGS $GRUB_PKGS"
     FILE_PKGS="tar xz gzip zstd zip unzip 7zip p7zip"
     FONTS="fontconfig font-misc-misc terminus-font dejavu-fonts-ttf"
     WAYLAND_PKGS="$GFX_WL_PKGS $FONTS orca"
     XORG_PKGS="$GFX_PKGS $FONTS xorg-fonts xorg-server xorg-apps xorg-minimal xorg-input-drivers setxkbmap xauth orca"
-    SERVICES="sshd chronyd"
+
+    SERVICES_PKGS="dbus NetworkManager polkitd elogind lightdm rtkit"
+    SERVICES="sshd chronyd dbus NetworkManager polkitd elogind lightdm rtkit"
+
+    BSPWM0="xorg xf86-input-libinput network-manager alacritty xfce4-terminal rofi dmenu polybar picom Thunar gvfs gvfs-mtp"
+    BSPWM1="thunar-archive-plugin thunar-media-tags-plugin feh brightnessctl xss-lock betterlockscreen i3lock-color xrdb xdg-user-dirs polkit-gnome"
+    BSPWM2="power-profiles-daemon lm_sensors htop btop fastfetch playerctl firefox chromium flameshot galculator geany timeshift xmirror lxappearance"
+    BSPWM3="papirus-icon-theme gtk-engine-murrine arc-theme pipewire wireplumber libspa-bluetooth alsa-pipewire libjack-pipewire pavucontrol pamixer"
+    BSPWM4="tree bat eza nano vi vim neovim git curl wget zenity tmux fzf ranger base-devel xtools"
+
+    BSPWM="$BSWPM0 $BSWPM1 $BSWPM2 $BSWPM3 $BSPWM4"
 
     LIGHTDM_SESSION=''
 
     case $variant in
         bspwm)
-            PKGS="$PKGS $FILE_PKGS tree bat eza nano NetworkManager polkit elogind"
+            PKGS="$SERVICE_PKGS $PKGS $FILE_PKGS $BSPWM"
             CLI=yes
             BSPWM=yes
 
-            SERVICES="$SERVICES dbus NetworkManager polkitd elogind"
+            SERVICES="$SERVICES"
         ;;
         *)
             >&2 echo "Unknown variant $variant"
@@ -202,7 +212,7 @@ EOF
 
     case "$variant" in
       base|server)
-        echo "Without Pipewire"
+        echo -e "\033[0;31m[!]\033[0m Without Pipewire"
       ;;
       *)
         setup_pipewire
